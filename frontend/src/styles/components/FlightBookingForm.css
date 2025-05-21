@@ -1,0 +1,223 @@
+body {
+  background: transparent;
+}
+
+/* Wrapper */
+.form-wrapper {
+  background-color: #ffffff;
+  padding: 2rem;
+  border-radius: 10px;
+}
+
+/* Tabs */
+.trip-type-tabs {
+  background-color: #f5f5f5;
+  width: fit-content;
+  padding: 5px 6px;
+  border-radius: 6px;
+  margin-bottom: 1.5rem;
+  display: flex;
+  gap: 1rem;
+}
+
+.trip-type-tabs button {
+  padding: 4px 16px;
+  font-size: 14px;
+  color: #3c3c3c;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.trip-type-tabs button.active {
+  background-color: #ffffff;
+  color: #0f2c4d;
+  font-weight: 700;
+}
+
+/* Input Containers */
+.input-group {
+  position: relative;
+  width: 100%;
+}
+
+.input-group label {
+  position: absolute;
+  top: 4px;
+  left: 10px;
+  color: rgb(116, 116, 124);
+  font-size: 14px;
+  pointer-events: none;
+}
+
+.input-group input {
+  border-radius: 6px;
+  background-color: #f5f5f5;
+  border: none;
+  outline: none;
+  padding: 27px 10px 8px 10px;
+  width: 100%;
+}
+
+/* Date Inputs */
+input#roundTripStartInput {
+  border-radius: 6px 0 0 6px;
+}
+input#roundTripEndInput {
+  border-radius: 0 6px 6px 0;
+}
+
+/* Row */
+.form-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+/* Traveller Dropdown */
+.traveller-selector {
+  border: none;
+  padding: 10px;
+  border-radius: 6px;
+  box-shadow: 0px 5px 23px -11px rgba(0, 0, 0, 0.75);
+  background-color: #fff;
+}
+
+.traveller-group {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  min-width: 230px;
+}
+
+.traveller-label span {
+  font-weight: bold;
+}
+
+.traveller-label small {
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.counter {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.counter button {
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border: none;
+  outline: none;
+  border-radius: 100%;
+  background-color: #f5f5f5;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.counter span {
+  width: 20px;
+  display: grid;
+  place-items: center;
+}
+
+/* Search Button */
+.search-button {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.search-button button {
+  width: 100%;
+  height: 100%;
+  border: none;
+  outline: none;
+  background-color: #0f2c4d;
+  color: white;
+  font-weight: bold;
+  display: grid;
+  place-items: center;
+  border-radius: 6px;
+  padding: 0.75rem 1.5rem;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.search-icon {
+  font-size: 24px;
+  color: white;
+}
+
+.search-button button {
+  width: 100%;
+  height: 100%;
+  border: none;
+  outline: none;
+  background-color: #0f2c4d;
+  color: white;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 6px;
+  padding: 0.75rem 1.5rem;
+  gap: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.search-button button:hover {
+  background-color: #09325c;
+}
+
+.traveller-summary-input {
+  width: 100%;
+  margin-top: 6px;
+  padding: 10px;
+  border: none;
+  background-color: #f5f5f5;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.date-input {
+  width: 100%;
+  padding: 27px 10px 8px 10px;
+  border-radius: 6px;
+  background-color: #f5f5f5;
+  border: none;
+  outline: none;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 992px) {
+  .form-row > div {
+    flex: 1 1 100%;
+  }
+
+  .search-button button {
+    font-size: 1.2rem;
+  }
+
+  .counter span {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .counter button {
+    width: 28px;
+    height: 28px;
+    font-size: 1rem;
+  }
+
+  .trip-type-tabs {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
