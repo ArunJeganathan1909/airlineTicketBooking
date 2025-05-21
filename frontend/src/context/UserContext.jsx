@@ -14,12 +14,23 @@ export const UserProvider = ({ children }) => {
       body: JSON.stringify({ email, password }),
     });
 
+    if (!res.ok) {
+      throw new Error("Login failed");
+    }
+
     const userData = await res.json();
     setUser(userData);
 
+    // Show username in console
+    console.log(`${userData.username} logged in`);
+
+    // Show alert
+    alert(`${userData.username} logged in`);
+
+    // Role-based redirection
     if (userData.role === "ADMIN") navigate("/admin");
     else if (userData.role === "OPERATOR") navigate("/operator");
-    else navigate(-1); 
+    else navigate(-1);
   };
 
   return (
@@ -29,4 +40,4 @@ export const UserProvider = ({ children }) => {
   );
 };
 
-export const useUser = () => useContext(UserContext);  
+export const useUser = () => useContext(UserContext);
