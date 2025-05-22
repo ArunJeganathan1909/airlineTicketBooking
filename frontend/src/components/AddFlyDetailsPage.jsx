@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 const AddFlyDetailsPage = () => {
@@ -9,6 +9,36 @@ const AddFlyDetailsPage = () => {
   const [departureTime, setDepartureTime] = useState("");
   const [arrivalTime, setArrivalTime] = useState("");
   const [restTime, setRestTime] = useState("00H00M");
+  const [airportCodes, setAirportCodes] = useState([]);
+
+  useEffect(() => {
+    const fetchFlight = async () => {
+      try {
+        const res = await fetch(`http://localhost:8080/api/flights`);
+        const data = await res.json();
+        const flight = data.find((f) => f.flightCode === flightCode);
+        if (flight) {
+          setAirportCodes(flight.departureAirportCodes || []);
+        }
+      } catch (err) {
+        console.error("Failed to fetch flight data", err);
+      }
+    };
+
+    fetchFlight();
+  }, [flightCode]);
+
+  const handleDepartureSelect = (value) => {
+    setDepartureAirportCode(value);
+    const alt = airportCodes.find((code) => code !== value);
+    if (alt) setArrivalAirportCode(alt);
+  };
+
+  const handleArrivalSelect = (value) => {
+    setArrivalAirportCode(value);
+    const alt = airportCodes.find((code) => code !== value);
+    if (alt) setDepartureAirportCode(alt);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -38,7 +68,7 @@ const AddFlyDetailsPage = () => {
         setArrivalAirportCode("");
         setDepartureTime("");
         setArrivalTime("");
-        setRestTime("00:00:00");
+        setRestTime("00H00M");
       } else {
         alert("Failed to add FlyDetails");
       }
@@ -50,23 +80,35 @@ const AddFlyDetailsPage = () => {
 
   return (
     <div>
-      <h2> Add Fly Details to flight: {flightCode}</h2>
+      <h2>Add Fly Details to flight: {flightCode}</h2>
 
       <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Departure Airport Code"
+        <select
           value={departureAirportCode}
-          onChange={(e) => setDepartureAirportCode(e.target.value)}
+          onChange={(e) => handleDepartureSelect(e.target.value)}
           required
-        />
-        <input
-          type="text"
-          placeholder="Arrival Airport Code"
+        >
+          <option value="">Select Departure Airport</option>
+          {airportCodes.map((code) => (
+            <option key={code} value={code}>
+              {code}
+            </option>
+          ))}
+        </select>
+
+        <select
           value={arrivalAirportCode}
-          onChange={(e) => setArrivalAirportCode(e.target.value)}
+          onChange={(e) => handleArrivalSelect(e.target.value)}
           required
-        />
+        >
+          <option value="">Select Arrival Airport</option>
+          {airportCodes.map((code) => (
+            <option key={code} value={code}>
+              {code}
+            </option>
+          ))}
+        </select>
+
         <input
           type="datetime-local"
           value={departureTime}
