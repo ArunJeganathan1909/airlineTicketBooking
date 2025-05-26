@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { FiSearch } from "react-icons/fi";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "../styles/components/FlightBookingForm.css";
+import { useNavigate } from "react-router-dom";
 
 const FlightBookingForm = () => {
   const [adultCount, setAdultCount] = useState(1);
@@ -13,6 +14,110 @@ const FlightBookingForm = () => {
   const [roundTripStart, setRoundTripStart] = useState(null);
   const [roundTripEnd, setRoundTripEnd] = useState(null);
   const [oneWayDate, setOneWayDate] = useState(null);
+
+  const [airports, setAirports] = useState([]);
+  const [departureSearch, setDepartureSearch] = useState("");
+  const [destinationSearch, setDestinationSearch] = useState("");
+  const [filteredDepartures, setFilteredDepartures] = useState([]);
+  const [filteredDestinations, setFilteredDestinations] = useState([]);
+  const [showDepartureDropdown, setShowDepartureDropdown] = useState(false);
+  const [showDestinationDropdown, setShowDestinationDropdown] = useState(false);
+
+  const departureRef = useRef(null);
+  const destinationRef = useRef(null);
+  const travellerRef = useRef(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    fetch("http://localhost:8080/api/airports")
+      .then((res) => res.json())
+      .then((data) => setAirports(data))
+      .catch((err) => console.error("Failed to load airports", err));
+  }, []);
+
+  useEffect(() => {
+    const search = departureSearch.toLowerCase();
+    setFilteredDepartures(
+      airports.filter(
+        (airport) =>
+          airport.airportName.toLowerCase().includes(search) ||
+          airport.airportCode.toLowerCase().includes(search) ||
+          airport.city.toLowerCase().includes(search) ||
+          airport.country.toLowerCase().includes(search)
+      )
+    );
+  }, [departureSearch, airports]);
+
+  useEffect(() => {
+    const search = destinationSearch.toLowerCase();
+    setFilteredDestinations(
+      airports.filter(
+        (airport) =>
+          airport.airportName.toLowerCase().includes(search) ||
+          airport.airportCode.toLowerCase().includes(search) ||
+          airport.city.toLowerCase().includes(search) ||
+          airport.country.toLowerCase().includes(search)
+      )
+    );
+  }, [destinationSearch, airports]);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        departureRef.current &&
+        !departureRef.current.contains(event.target)
+      ) {
+        setShowDepartureDropdown(false);
+      }
+      if (
+        destinationRef.current &&
+        !destinationRef.current.contains(event.target)
+      ) {
+        setShowDestinationDropdown(false);
+      }
+      if (
+        travellerRef.current &&
+        !travellerRef.current.contains(event.target)
+      ) {
+        setShowTravellers(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+
+    const departureCode = departureSearch.split(",")[1]?.trim();
+    const arrivalCode = destinationSearch.split(",")[1]?.trim();
+
+    const date =
+      tripType === "round"
+        ? roundTripStart?.toISOString().split("T")[0]
+        : oneWayDate?.toISOString().split("T")[0];
+
+    if (departureCode && arrivalCode && date) {
+      navigate(
+        `/filtered-flights?departure=${departureCode}&arrival=${arrivalCode}&date=${date}`
+      );
+    } else {
+      alert("Please select valid departure, destination and date");
+    }
+  };
+
+  const handleDepartureSelect = (airport) => {
+    setDepartureSearch(`${airport.airportName}, ${airport.airportCode}`);
+    setShowDepartureDropdown(false);
+  };
+
+  const handleDestinationSelect = (airport) => {
+    setDestinationSearch(`${airport.airportName}, ${airport.airportCode}`);
+    setShowDestinationDropdown(false);
+  };
 
   return (
     <div className="booking-container">
@@ -34,16 +139,57 @@ const FlightBookingForm = () => {
 
         <form id="bookingForm" className="form">
           <div className="form-row">
-            <div className="input-group">
+            {/* Departure */}
+            <div className="input-group" ref={departureRef}>
               <label htmlFor="departure">Departure</label>
-              <input id="departure" placeholder="City or Airport" />
+              <input
+                id="departure"
+                value={departureSearch}
+                onFocus={() => setShowDepartureDropdown(true)}
+                onChange={(e) => setDepartureSearch(e.target.value)}
+                placeholder="City or Airport"
+              />
+              {showDepartureDropdown && filteredDepartures.length > 0 && (
+                <ul className="airport-dropdown">
+                  {filteredDepartures.map((airport) => (
+                    <li
+                      key={airport.id}
+                      onClick={() => handleDepartureSelect(airport)}
+                    >
+                      {airport.airportName}, {airport.airportCode} (
+                      {airport.city}, {airport.country})
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
 
-            <div className="input-group">
+            {/* Destination */}
+            <div className="input-group" ref={destinationRef}>
               <label htmlFor="destination">Destination</label>
-              <input id="destination" placeholder="City or Airport" />
+              <input
+                id="destination"
+                value={destinationSearch}
+                onFocus={() => setShowDestinationDropdown(true)}
+                onChange={(e) => setDestinationSearch(e.target.value)}
+                placeholder="City or Airport"
+              />
+              {showDestinationDropdown && filteredDestinations.length > 0 && (
+                <ul className="airport-dropdown">
+                  {filteredDestinations.map((airport) => (
+                    <li
+                      key={airport.id}
+                      onClick={() => handleDestinationSelect(airport)}
+                    >
+                      {airport.airportName}, {airport.airportCode} (
+                      {airport.city}, {airport.country})
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
 
+            {/* Date Picker Section */}
             {tripType === "round" ? (
               <div className="input-group-row">
                 <div className="input-group">
@@ -77,14 +223,14 @@ const FlightBookingForm = () => {
               </div>
             )}
 
-            <div className="traveller-dropdown">
+            {/* Travellers */}
+            <div className="traveller-dropdown" ref={travellerRef}>
               <label
                 onClick={() => setShowTravellers(!showTravellers)}
                 style={{ cursor: "pointer" }}
               >
                 Travellers
               </label>
-
               <input
                 type="text"
                 readOnly
@@ -94,9 +240,8 @@ const FlightBookingForm = () => {
                   childCount !== 1 ? "ren" : ""
                 }, ${infantCount} Infant${infantCount > 1 ? "s" : ""}`}
                 className="traveller-summary-input"
-                onClick={() => setShowTravellers(!showTravellers)} // also toggle dropdown when clicking input
+                onClick={() => setShowTravellers(!showTravellers)}
               />
-
               {showTravellers && (
                 <div className="traveller-selector">
                   <div className="traveller-group">
@@ -171,16 +316,9 @@ const FlightBookingForm = () => {
               )}
             </div>
 
+            {/* Submit */}
             <div className="search-button">
-              <button
-                type="submit"
-                onClick={(e) => {
-                  e.preventDefault();
-                  alert(
-                    "Failed to load the data via API: Please Contact Brightsun technical team and pass the code of XyCztV:fareforyou.com"
-                  );
-                }}
-              >
+              <button type="submit" onClick={handleSearchSubmit}>
                 <FiSearch className="search-icon" />
                 <span>Search</span>
               </button>

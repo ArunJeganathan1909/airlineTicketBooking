@@ -194,6 +194,28 @@ input#roundTripEndInput {
   outline: none;
 }
 
+.airport-dropdown {
+  position: absolute;
+  background: white;
+  border: 1px solid #ddd;
+  max-height: 200px;
+  overflow-y: auto;
+  width: 100%;
+  z-index: 1000;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.airport-dropdown li {
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.airport-dropdown li:hover {
+  background-color: #f0f0f0;
+}
+
 /* Responsive Adjustments */
 @media (max-width: 992px) {
   .form-row > div {

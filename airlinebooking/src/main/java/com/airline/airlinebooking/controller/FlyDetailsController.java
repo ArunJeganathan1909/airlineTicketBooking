@@ -102,4 +102,18 @@ public class FlyDetailsController {
     public void deleteFlyDetail(@PathVariable long id) {
         flyDetailsRepository.deleteById(id);
     }
+
+    @GetMapping("/search")
+    public List<FlyDetails> searchFlights(
+            @RequestParam String departureCode,
+            @RequestParam String arrivalCode,
+            @RequestParam String date // Format: yyyy-MM-dd
+    ) {
+        LocalDateTime start = LocalDateTime.parse(date + "T00:00:00");
+        LocalDateTime end = LocalDateTime.parse(date + "T23:59:59");
+        return flyDetailsRepository.findByDepartureAirportCodeAndArrivalAirportCodeAndDepartureTimeBetween(
+                departureCode, arrivalCode, start, end
+        );
+    }
+
 }
