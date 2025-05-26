@@ -6,6 +6,7 @@ import RegisterPage from "./components/RegisterPage";
 import FlightBookingForm from "./components/FlightBookingForm";
 import AddFlightPage from "./components/AddFlightPage";
 import AddFlyDetailsPage from "./components/AddFlyDetailsPage";
+import AddAirportPage from "./components/AddAirportPage";
 
 const App = () => {
   return (
@@ -17,6 +18,7 @@ const App = () => {
           <Route path="/booking" element={<FlightBookingForm />} />
           <Route path="/add-flight" element={<AddFlightPage />} />
           <Route path="/add-fly-details/:flightCode" element={<AddFlyDetailsPage />} />
+          <Route path="/add-airport" element={<AddAirportPage />} />
         </Routes>
       </UserProvider>
     </Router>

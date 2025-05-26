@@ -29,6 +29,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/flights/**").permitAll()
                         .requestMatchers("/api/fly-details/**").permitAll()
+                        .requestMatchers("/api/airports/**").permitAll()
                         .anyRequest().authenticated()
                 );
 
