@@ -17,4 +17,15 @@ public interface FlyDetailsRepository extends JpaRepository<FlyDetails, Long> {
             LocalDateTime start,
             LocalDateTime end
     );
+
+    boolean existsByFlightCodeAndDepartureAirportCodeAndArrivalAirportCodeAndDepartureTime(
+            String flightCode,
+            String departureAirportCode,
+            String arrivalAirportCode,
+            LocalDateTime departureTime
+    );
+
+    long countByFlightCodeAndDepartureTimeBetween(String flightCode, LocalDateTime start, LocalDateTime end);
+
 }
+

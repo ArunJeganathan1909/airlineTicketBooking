@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,39 +40,59 @@ public class FlyDetailsController {
         List<FlyDetails> generatedDetails = new ArrayList<>();
         generatedDetails.add(outbound);
 
-        // Parse travelingTime string (e.g., "2H30M") into Duration
         Duration travelDuration = parseDurationFromString(flight.getTravelingTime());
 
-        // Create round trips for the next 2 months, every 7 days (14-day cycle)
         LocalDateTime nextDeparture = outbound.getArrivalTime().plus(outbound.getRestTime());
-        LocalDateTime endDate = outbound.getDepartureTime().plusMonths(2);
+        LocalDateTime endDate = outbound.getDepartureTime().plusDays(10);
 
-        boolean isReturn = true;
         FlyDetails previous = outbound;
 
         while (nextDeparture.isBefore(endDate)) {
+            LocalDate flightDay = nextDeparture.toLocalDate();
+
+            // Check if this flightCode has less than 4 flights for this date
+            long flightCountForDay = flyDetailsRepository.findByFlightCode(flightCode).stream()
+                    .filter(f -> f.getDepartureTime().toLocalDate().equals(flightDay))
+                    .count();
+
+            if (flightCountForDay >= 4) {
+                // Skip this day (advance to the next day)
+                nextDeparture = nextDeparture.plusDays(1).withHour(0).withMinute(0);
+                continue;
+            }
+
             FlyDetails next = new FlyDetails();
             next.setFlightCode(flightCode);
 
-            if (isReturn) {
-                next.setDepartureAirportCode(previous.getArrivalAirportCode());
-                next.setArrivalAirportCode(previous.getDepartureAirportCode());
+            // Always set departure from the last arrival airport
+            next.setDepartureAirportCode(previous.getArrivalAirportCode());
+
+            // Decide the arrival airport by toggling between the first outbound route
+            if (next.getDepartureAirportCode().equalsIgnoreCase(outbound.getDepartureAirportCode())) {
+                next.setArrivalAirportCode(outbound.getArrivalAirportCode());
             } else {
-                next.setDepartureAirportCode(previous.getDepartureAirportCode());
-                next.setArrivalAirportCode(previous.getArrivalAirportCode());
+                next.setArrivalAirportCode(outbound.getDepartureAirportCode());
             }
 
             next.setDepartureTime(nextDeparture);
             next.setArrivalTime(nextDeparture.plus(travelDuration));
             next.setRestTime(outbound.getRestTime());
 
+            // Check for duplicates
+            boolean exists = flyDetailsRepository.existsByFlightCodeAndDepartureAirportCodeAndArrivalAirportCodeAndDepartureTime(
+                    next.getFlightCode(),
+                    next.getDepartureAirportCode(),
+                    next.getArrivalAirportCode(),
+                    next.getDepartureTime()
+            );
+
+            if (!exists) {
+                FlyDetails saved = flyDetailsRepository.save(next);
+                flight.getFlyDetails().add(saved);
+                generatedDetails.add(saved);
+            }
+
             nextDeparture = next.getArrivalTime().plus(next.getRestTime());
-
-            FlyDetails saved = flyDetailsRepository.save(next);
-            flight.getFlyDetails().add(saved);
-            generatedDetails.add(saved);
-
-            isReturn = !isReturn; // alternate directions
             previous = next;
         }
 
