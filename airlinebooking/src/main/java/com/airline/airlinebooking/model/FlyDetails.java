@@ -1,5 +1,6 @@
 package com.airline.airlinebooking.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -19,7 +20,10 @@ public class FlyDetails {
     private String departureAirportCode;
     private String arrivalAirportCode;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
     private LocalDateTime departureTime;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
     private LocalDateTime arrivalTime;
 
     @Column(name = "rest_time")

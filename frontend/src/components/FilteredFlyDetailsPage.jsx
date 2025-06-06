@@ -27,14 +27,18 @@ const FilteredFlyDetailsPage = () => {
 
   return (
     <div>
-      <h2>Flights from {departure} to {arrival} on {date}</h2>
+      <h2>
+        Flights from {departure} to {arrival} on {date}
+      </h2>
       {results.length === 0 ? (
         <p>No flights found.</p>
       ) : (
         <ul>
           {results.map((flight) => (
             <li key={flight.id}>
-              Flight Code: {flight.flightCode} | Departure: {flight.departureTime} | Arrival: {flight.arrivalTime}
+              Flight Code: {flight.flightCode} | Departure:{" "}
+              {new Date(flight.departureTime + "Z").toLocaleString()} | Arrival:{" "}
+              {new Date(flight.arrivalTime + "Z").toLocaleString()}
             </li>
           ))}
         </ul>
