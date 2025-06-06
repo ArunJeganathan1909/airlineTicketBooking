@@ -128,15 +128,33 @@ public class FlyDetailsController {
     public List<FlyDetails> searchFlights(
             @RequestParam String departureCode,
             @RequestParam String arrivalCode,
-            @RequestParam String date // Format: yyyy-MM-dd
+            @RequestParam String date, // leaving on
+            @RequestParam(required = false) String returnDate // returning on
     ) {
+        List<FlyDetails> results = new ArrayList<>();
+
+        // Outbound
         LocalDate localDate = LocalDate.parse(date);
         LocalDateTime start = localDate.atStartOfDay();
         LocalDateTime end = start.plusDays(1).minusSeconds(1);
 
-        return flyDetailsRepository.findByDepartureAirportCodeAndArrivalAirportCodeAndDepartureTimeBetween(
-                departureCode, arrivalCode, start, end
-        );
+        results.addAll(flyDetailsRepository
+                .findByDepartureAirportCodeAndArrivalAirportCodeAndDepartureTimeBetween(
+                        departureCode, arrivalCode, start, end));
+
+        // Return trip
+        if (returnDate != null) {
+            LocalDate returnLocalDate = LocalDate.parse(returnDate);
+            LocalDateTime returnStart = returnLocalDate.atStartOfDay();
+            LocalDateTime returnEnd = returnStart.plusDays(1).minusSeconds(1);
+
+            results.addAll(flyDetailsRepository
+                    .findByDepartureAirportCodeAndArrivalAirportCodeAndDepartureTimeBetween(
+                            arrivalCode, departureCode, returnStart, returnEnd));
+        }
+
+        return results;
     }
+
 
 }

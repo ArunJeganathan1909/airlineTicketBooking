@@ -95,15 +95,20 @@ const FlightBookingForm = () => {
     const departureCode = departureSearch.split(",")[1]?.trim();
     const arrivalCode = destinationSearch.split(",")[1]?.trim();
 
-    const date =
+    const leavingDate =
       tripType === "round"
         ? roundTripStart?.toISOString().split("T")[0]
         : oneWayDate?.toISOString().split("T")[0];
 
-    if (departureCode && arrivalCode && date) {
-      navigate(
-        `/filtered-flights?departure=${departureCode}&arrival=${arrivalCode}&date=${date}`
-      );
+    const returningDate =
+      tripType === "round" ? roundTripEnd?.toISOString().split("T")[0] : null;
+
+    if (departureCode && arrivalCode && leavingDate) {
+      let query = `/filtered-flights?departure=${departureCode}&arrival=${arrivalCode}&date=${leavingDate}`;
+      if (returningDate) {
+        query += `&returnDate=${returningDate}`;
+      }
+      navigate(query);
     } else {
       alert("Please select valid departure, destination and date");
     }
