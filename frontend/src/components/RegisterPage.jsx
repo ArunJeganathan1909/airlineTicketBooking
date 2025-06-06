@@ -1,16 +1,12 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
 import "../styles/components/Auth.css";
 
-
-const RegisterPage = () => {
+const RegisterPage = ({ switchToLogin, closeModal }) => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [mobile, setMobile] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("CUSTOMER");
-
-  const navigate = useNavigate();
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -23,7 +19,7 @@ const RegisterPage = () => {
 
       if (res.ok) {
         alert("Registration successful! Please log in.");
-        navigate("/login");
+        switchToLogin(); // Switch to login on success
       } else {
         const err = await res.text();
         alert("Registration failed: " + err);
@@ -66,14 +62,21 @@ const RegisterPage = () => {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          <select value={role} onChange={(e) => setRole(e.target.value)} required>
+          <select
+            value={role}
+            onChange={(e) => setRole(e.target.value)}
+            required
+          >
             <option value="CUSTOMER">Customer</option>
             <option value="OPERATOR">Operator</option>
             <option value="ADMIN">Admin</option>
           </select>
           <button type="submit">Register</button>
           <div className="auth-footer">
-            Already a member? <Link to="/login">Login</Link>
+            Already a member?{" "}
+            <span className="auth-switch-link" onClick={switchToLogin}>
+              Login
+            </span>
           </div>
         </form>
       </div>

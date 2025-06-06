@@ -3,7 +3,6 @@
   justify-content: center;
   align-items: center;
   padding: 2rem;
-  min-height: 100vh;
   background: linear-gradient(to right, #e3f2fd, #ffffff);
 }
 
@@ -77,6 +76,13 @@
 .auth-footer a:hover {
   text-decoration: underline;
 }
+
+.auth-switch-link {
+  color: #004aad;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
 
 /* Responsive adjustments */
 @media (max-width: 500px) {

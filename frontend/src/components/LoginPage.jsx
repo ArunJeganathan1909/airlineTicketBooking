@@ -1,9 +1,8 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 import { useUser } from "../context/UserContext";
 import "../styles/components/Auth.css";
 
-const LoginPage = () => {
+const LoginPage = ({ switchToRegister, closeModal }) => {
   const { login } = useUser();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -12,6 +11,7 @@ const LoginPage = () => {
     e.preventDefault();
     try {
       await login(email, password);
+      closeModal(); // Close on successful login
     } catch (error) {
       alert("Login failed");
     }
@@ -36,7 +36,10 @@ const LoginPage = () => {
           />
           <button type="submit">Login</button>
           <div className="auth-footer">
-            Don’t have an account? <Link to="/register">Register</Link>
+            Don’t have an account?{" "}
+            <span className="auth-switch-link" onClick={switchToRegister}>
+              Register
+            </span>
           </div>
         </form>
       </div>

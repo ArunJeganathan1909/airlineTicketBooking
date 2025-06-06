@@ -8,19 +8,27 @@ import AddFlightPage from "./components/AddFlightPage";
 import AddFlyDetailsPage from "./components/AddFlyDetailsPage";
 import AddAirportPage from "./components/AddAirportPage";
 import FilteredFlyDetailsPage from "./components/FilteredFlyDetailsPage";
+import HomePage from "./pages/HomePage";
 
 const App = () => {
   return (
     <Router>
       <UserProvider>
         <Routes>
+          <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/booking" element={<FlightBookingForm />} />
           <Route path="/add-flight" element={<AddFlightPage />} />
-          <Route path="/add-fly-details/:flightCode" element={<AddFlyDetailsPage />} />
+          <Route
+            path="/add-fly-details/:flightCode"
+            element={<AddFlyDetailsPage />}
+          />
           <Route path="/add-airport" element={<AddAirportPage />} />
-          <Route path="/filtered-flights" element={<FilteredFlyDetailsPage />} />
+          <Route
+            path="/filtered-flights"
+            element={<FilteredFlyDetailsPage />}
+          />
         </Routes>
       </UserProvider>
     </Router>
