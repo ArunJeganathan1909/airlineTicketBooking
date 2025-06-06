@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import "../styles/components/FilteredFlyDetailsPage.css";
 
 const FilteredFlyDetailsPage = () => {
   const [searchParams] = useSearchParams();
@@ -29,55 +30,46 @@ const FilteredFlyDetailsPage = () => {
     if (departure && arrival && date) fetchData();
   }, [departure, arrival, date, returnDate]);
 
-  // Separate outbound and return flights
-  const outboundFlights = results.filter(
-    (f) =>
-      f.departureAirportCode === departure && f.arrivalAirportCode === arrival
-  );
+  const handleBookTicket = (pair) => {
+    const outboundCode = pair[0]?.flightCode;
+    const returnCode = pair[1]?.flightCode;
 
-  const returnFlights = results.filter(
-    (f) =>
-      f.departureAirportCode === arrival && f.arrivalAirportCode === departure
-  );
+    alert(
+      `Booking ticket:\nOutbound Flight: ${outboundCode}\nReturn Flight: ${
+        returnCode || "N/A"
+      }`
+    );
+  };
 
   return (
-    <div>
-      <h2>
-        Flights from {departure} to {arrival} on {date}
-      </h2>
-      {outboundFlights.length === 0 ? (
-        <p>No outbound flights found.</p>
+    <div className="page-container">
+      <h2>Filtered Flights</h2>
+      {results.length === 0 ? (
+        <p>No flights found.</p>
       ) : (
-        <ul>
-          {outboundFlights.map((flight) => (
-            <li key={flight.id}>
-              Flight Code: {flight.flightCode} | Departure:{" "}
-              {new Date(flight.departureTime).toLocaleString()} | Arrival:{" "}
-              {new Date(flight.arrivalTime).toLocaleString()}
-            </li>
-          ))}
-        </ul>
-      )}
+        <div className="flight-list">
+          {results.map((pair, index) => (
+            <div key={index} className="flight-item">
+              <div className="flight-info">
+                <strong>Outbound:</strong> Flight Code: {pair[0].flightCode} | Departure:{" "}
+                {new Date(pair[0].departureTime).toLocaleString()} | Arrival:{" "}
+                {new Date(pair[0].arrivalTime).toLocaleString()}
+              </div>
 
-      {returnDate && (
-        <>
-          <h2>
-            Return Flights from {arrival} to {departure} on {returnDate}
-          </h2>
-          {returnFlights.length === 0 ? (
-            <p>No return flights found.</p>
-          ) : (
-            <ul>
-              {returnFlights.map((flight) => (
-                <li key={flight.id}>
-                  Flight Code: {flight.flightCode} | Departure:{" "}
-                  {new Date(flight.departureTime).toLocaleString()} |
-                  Arrival: {new Date(flight.arrivalTime).toLocaleString()}
-                </li>
-              ))}
-            </ul>
-          )}
-        </>
+              {pair.length > 1 && (
+                <div className="flight-info">
+                  <strong>Return:</strong> Flight Code: {pair[1].flightCode} | Departure:{" "}
+                  {new Date(pair[1].departureTime).toLocaleString()} | Arrival:{" "}
+                  {new Date(pair[1].arrivalTime).toLocaleString()}
+                </div>
+              )}
+
+              <button className="book-button" onClick={() => handleBookTicket(pair)}>
+                Book Ticket
+              </button>
+            </div>
+          ))}
+        </div>
       )}
     </div>
   );

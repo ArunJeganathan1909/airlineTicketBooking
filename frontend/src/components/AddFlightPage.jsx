@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "../styles/components/AddFlightPage.css";
 
 const AddFlightPage = () => {
   const [flightCode, setFlightCode] = useState("");
@@ -23,9 +24,7 @@ const AddFlightPage = () => {
     try {
       const response = await fetch("http://localhost:8080/api/flights", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(flightData),
       });
 
@@ -43,10 +42,10 @@ const AddFlightPage = () => {
   };
 
   return (
-    <div>
-      <div>
+    <div className="add-flight-container">
+      <div className="form-card">
         <h2>Add New Flight</h2>
-        <form onSubmit={handleFlightSubmit}>
+        <form onSubmit={handleFlightSubmit} className="flight-form">
           <input
             type="text"
             placeholder="Flight Code"
@@ -75,14 +74,19 @@ const AddFlightPage = () => {
             onChange={(e) => setTravelingTime(e.target.value)}
             required
           />
-          <button type="submit">Add Flight</button>
+          <button type="submit" className="submit-button">
+            Add Flight
+          </button>
         </form>
 
         {createdFlight && (
-          <div>
+          <div className="flight-success">
             <h3>Flight Added: {createdFlight.flightCode}</h3>
             <p>Now you can add FlyDetails to this flight.</p>
-            <a href={`/add-fly-details/${createdFlight.flightCode}`}>
+            <a
+              href={`/add-fly-details/${createdFlight.flightCode}`}
+              className="add-flydetails-link"
+            >
               ➕ Go to Add FlyDetails
             </a>
           </div>

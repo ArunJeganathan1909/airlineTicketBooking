@@ -125,36 +125,68 @@ public class FlyDetailsController {
     }
 
     @GetMapping("/search")
-    public List<FlyDetails> searchFlights(
+    public List<List<FlyDetails>> searchFlights(
             @RequestParam String departureCode,
             @RequestParam String arrivalCode,
             @RequestParam String date, // leaving on
             @RequestParam(required = false) String returnDate // returning on
     ) {
-        List<FlyDetails> results = new ArrayList<>();
+        List<List<FlyDetails>> pairedResults = new ArrayList<>();
 
         // Outbound
         LocalDate localDate = LocalDate.parse(date);
         LocalDateTime start = localDate.atStartOfDay();
         LocalDateTime end = start.plusDays(1).minusSeconds(1);
 
-        results.addAll(flyDetailsRepository
+        List<FlyDetails> outboundFlights = flyDetailsRepository
                 .findByDepartureAirportCodeAndArrivalAirportCodeAndDepartureTimeBetween(
-                        departureCode, arrivalCode, start, end));
+                        departureCode, arrivalCode, start, end);
 
-        // Return trip
         if (returnDate != null) {
             LocalDate returnLocalDate = LocalDate.parse(returnDate);
             LocalDateTime returnStart = returnLocalDate.atStartOfDay();
             LocalDateTime returnEnd = returnStart.plusDays(1).minusSeconds(1);
 
-            results.addAll(flyDetailsRepository
+            List<FlyDetails> returnFlights = flyDetailsRepository
                     .findByDepartureAirportCodeAndArrivalAirportCodeAndDepartureTimeBetween(
-                            arrivalCode, departureCode, returnStart, returnEnd));
+                            arrivalCode, departureCode, returnStart, returnEnd);
+
+            // Pair outbound and return flights based on same airline
+            for (FlyDetails outbound : outboundFlights) {
+                Flight flight = flightRepository.findAll().stream()
+                        .filter(f -> f.getFlightCode().equalsIgnoreCase(outbound.getFlightCode()))
+                        .findFirst()
+                        .orElse(null);
+
+                if (flight != null) {
+                    String airlineName = flight.getAirlineName();
+                    List<FlyDetails> matchingReturns = new ArrayList<>();
+                    for (FlyDetails ret : returnFlights) {
+                        Flight retFlight = flightRepository.findAll().stream()
+                                .filter(f -> f.getFlightCode().equalsIgnoreCase(ret.getFlightCode()))
+                                .findFirst()
+                                .orElse(null);
+
+                        if (retFlight != null && retFlight.getAirlineName().equalsIgnoreCase(airlineName)) {
+                            // Add as a pair
+                            List<FlyDetails> pair = new ArrayList<>();
+                            pair.add(outbound);
+                            pair.add(ret);
+                            pairedResults.add(pair);
+                        }
+                    }
+                }
+            }
+        } else {
+            // One-way trip, return each outbound flight as its own pair (with one element)
+            for (FlyDetails outbound : outboundFlights) {
+                List<FlyDetails> pair = new ArrayList<>();
+                pair.add(outbound);
+                pairedResults.add(pair);
+            }
         }
 
-        return results;
+        return pairedResults;
     }
-
 
 }

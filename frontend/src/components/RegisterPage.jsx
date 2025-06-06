@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import "../styles/components/Auth.css";
+
 
 const RegisterPage = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
-  const [mobile, setMobile] = useState(""); // Optional field
+  const [mobile, setMobile] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("CUSTOMER");
 
@@ -12,19 +14,11 @@ const RegisterPage = () => {
 
   const handleRegister = async (e) => {
     e.preventDefault();
-
     try {
       const res = await fetch("http://localhost:8080/api/auth/register", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          username,
-          email,
-          password,
-          role,
-        }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, email, password, role }),
       });
 
       if (res.ok) {
@@ -36,18 +30,18 @@ const RegisterPage = () => {
       }
     } catch (error) {
       console.error(error);
-      alert("Something went wrong. Try again later.");
+      alert("Something went wrong.");
     }
   };
 
   return (
-    <div className="page-container">
-      <div className="form-container">
-        <h1 className="form-heading">Register</h1>
-        <form className="form" onSubmit={handleRegister}>
+    <div className="auth-container">
+      <div className="auth-card">
+        <h1 className="auth-heading">Register</h1>
+        <form className="auth-form" onSubmit={handleRegister}>
           <input
             type="text"
-            placeholder="Enter your name. eg: Arun"
+            placeholder="Enter your name e.g. Arun"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             required
@@ -61,34 +55,25 @@ const RegisterPage = () => {
           />
           <input
             type="tel"
-            placeholder="e.g: +94 07xxxxxxxx"
+            placeholder="e.g. +94 07xxxxxxxx"
             value={mobile}
             onChange={(e) => setMobile(e.target.value)}
           />
           <input
             type="password"
-            placeholder="password"
+            placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-
-          <select
-            value={role}
-            onChange={(e) => setRole(e.target.value)}
-            required
-          >
+          <select value={role} onChange={(e) => setRole(e.target.value)} required>
             <option value="CUSTOMER">Customer</option>
             <option value="OPERATOR">Operator</option>
             <option value="ADMIN">Admin</option>
           </select>
-
           <button type="submit">Register</button>
-
-          <div className="account-text">
-            Already a member?
-            <br />
-            <Link to={"/login"}>Login</Link>
+          <div className="auth-footer">
+            Already a member? <Link to="/login">Login</Link>
           </div>
         </form>
       </div>

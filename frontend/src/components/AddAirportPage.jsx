@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "../styles/components/AddAirportPage.css"; 
 
 const AddAirportPage = () => {
   const [airportName, setAirportName] = useState("");
@@ -39,39 +40,41 @@ const AddAirportPage = () => {
   };
 
   return (
-    <div>
-      <h2>Add New Airport</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Airport Name"
-          value={airportName}
-          onChange={(e) => setAirportName(e.target.value)}
-          required
-        />
-        <input
-          type="text"
-          placeholder="Airport Code (e.g. LAX)"
-          value={airportCode}
-          onChange={(e) => setAirportCode(e.target.value)}
-          required
-        />
-        <input
-          type="text"
-          placeholder="Country"
-          value={country}
-          onChange={(e) => setCountry(e.target.value)}
-          required
-        />
-        <input
-          type="text"
-          placeholder="City"
-          value={city}
-          onChange={(e) => setCity(e.target.value)}
-          required
-        />
-        <button type="submit">Add Airport</button>
-      </form>
+    <div className="airport-container">
+      <div className="airport-form-card">
+        <h2>Add New Airport</h2>
+        <form onSubmit={handleSubmit} className="airport-form">
+          <input
+            type="text"
+            placeholder="Airport Name"
+            value={airportName}
+            onChange={(e) => setAirportName(e.target.value)}
+            required
+          />
+          <input
+            type="text"
+            placeholder="Airport Code (e.g. LAX)"
+            value={airportCode}
+            onChange={(e) => setAirportCode(e.target.value)}
+            required
+          />
+          <input
+            type="text"
+            placeholder="Country"
+            value={country}
+            onChange={(e) => setCountry(e.target.value)}
+            required
+          />
+          <input
+            type="text"
+            placeholder="City"
+            value={city}
+            onChange={(e) => setCity(e.target.value)}
+            required
+          />
+          <button type="submit" className="submit-button">Add Airport</button>
+        </form>
+      </div>
     </div>
   );
 };

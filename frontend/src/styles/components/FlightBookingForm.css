@@ -76,12 +76,33 @@ input#roundTripEndInput {
 }
 
 /* Traveller Dropdown */
+.traveller-dropdown {
+  position: relative;
+}
+
 .traveller-selector {
-  border: none;
-  padding: 10px;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 4px;
+  z-index: 999;
+  background-color: #fff;
   border-radius: 6px;
   box-shadow: 0px 5px 23px -11px rgba(0, 0, 0, 0.75);
-  background-color: #fff;
+  padding: 10px;
+  width: max-content;
+  min-width: 260px;
+}
+
+.traveller-summary-input {
+  width: 100%;
+  margin-top: 6px;
+  padding: 10px;
+  border: none;
+  background-color: #f5f5f5;
+  border-radius: 6px;
+  cursor: pointer;
+  box-sizing: border-box;
 }
 
 .traveller-group {
@@ -241,5 +262,49 @@ input#roundTripEndInput {
   .trip-type-tabs {
     flex-direction: column;
     align-items: flex-start;
+  }
+}
+
+@media (max-width: 992px) {
+  .form-row {
+    flex-direction: column;
+  }
+
+  .form-row > div {
+    width: 100%;
+  }
+
+  .traveller-selector {
+    position: absolute;
+    left: 0;
+    top: calc(100% + 6px);
+    width: 100%;
+    min-width: unset;
+  }
+}
+
+@media (max-width: 576px) {
+  .form-wrapper {
+    padding: 1.2rem;
+  }
+
+  .search-button button {
+    font-size: 1rem;
+    padding: 0.6rem 1rem;
+  }
+
+  .counter button {
+    width: 28px;
+    height: 28px;
+    font-size: 1rem;
+  }
+
+  .counter span {
+    font-size: 1rem;
+  }
+
+  .airport-dropdown li {
+    font-size: 0.9rem;
+    padding: 6px 10px;
   }
 }
