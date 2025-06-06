@@ -9,6 +9,11 @@ import AddFlyDetailsPage from "./components/AddFlyDetailsPage";
 import AddAirportPage from "./components/AddAirportPage";
 import FilteredFlyDetailsPage from "./components/FilteredFlyDetailsPage";
 import HomePage from "./pages/HomePage";
+import AdminPage from "./pages/AdminPage";
+import Flights from "./components/Flights";
+import AdminWelcome from "./components/AdminWelcome";
+import FlyDetails from "./components/FlyDetails";
+import Airport from "./components/Airport";
 
 const App = () => {
   return (
@@ -16,6 +21,13 @@ const App = () => {
       <UserProvider>
         <Routes>
           <Route path="/" element={<HomePage />} />
+          <Route path="/admin" element={<AdminPage />}>
+            <Route index element={<AdminWelcome />} />
+            <Route path="flights" element={<Flights />} />
+            <Route path="fly-details" element={<FlyDetails />} />
+            <Route path="airports" element={<Airport />} />
+            {/* Add other nested routes here */}
+          </Route>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/booking" element={<FlightBookingForm />} />

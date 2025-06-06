@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 import "../styles/components/AddFlightPage.css";
 
-const AddFlightPage = () => {
+const AddFlightPage = ({ onClose }) => {
   const [flightCode, setFlightCode] = useState("");
   const [airlineName, setAirlineName] = useState("");
   const [departureAirportCodes, setDepartureAirportCodes] = useState("");
   const [travelingTime, setTravelingTime] = useState("");
-  const [createdFlight, setCreatedFlight] = useState(null);
 
   const handleFlightSubmit = async (e) => {
     e.preventDefault();
@@ -29,9 +28,13 @@ const AddFlightPage = () => {
       });
 
       if (response.ok) {
-        const data = await response.json();
-        setCreatedFlight(data);
         alert("Flight added successfully!");
+        // Reset form
+        setFlightCode("");
+        setAirlineName("");
+        setDepartureAirportCodes("");
+        setTravelingTime("");
+        onClose(); // Close modal and refresh flights
       } else {
         alert("Failed to add flight");
       }
@@ -69,7 +72,7 @@ const AddFlightPage = () => {
           />
           <input
             type="text"
-            placeholder="Traveling Time (e.g., 2h 30m)"
+            placeholder="Traveling Time (e.g., 2H30M)"
             value={travelingTime}
             onChange={(e) => setTravelingTime(e.target.value)}
             required
@@ -78,19 +81,6 @@ const AddFlightPage = () => {
             Add Flight
           </button>
         </form>
-
-        {createdFlight && (
-          <div className="flight-success">
-            <h3>Flight Added: {createdFlight.flightCode}</h3>
-            <p>Now you can add FlyDetails to this flight.</p>
-            <a
-              href={`/add-fly-details/${createdFlight.flightCode}`}
-              className="add-flydetails-link"
-            >
-              ➕ Go to Add FlyDetails
-            </a>
-          </div>
-        )}
       </div>
     </div>
   );
