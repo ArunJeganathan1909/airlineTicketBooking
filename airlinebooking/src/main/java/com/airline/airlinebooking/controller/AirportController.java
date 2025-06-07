@@ -34,4 +34,17 @@ public class AirportController {
     public void deleteAirport(@PathVariable Long id) {
         airportService.deleteAirport(id);
     }
+
+    @PutMapping("/{id}")
+    public Airport updateAirport(@PathVariable Long id, @RequestBody Airport updatedAirport) {
+        Airport existingAirport = airportService.getAirportById(id);
+
+        existingAirport.setAirportName(updatedAirport.getAirportName());
+        existingAirport.setAirportCode(updatedAirport.getAirportCode());
+        existingAirport.setCity(updatedAirport.getCity());
+        existingAirport.setCountry(updatedAirport.getCountry());
+
+        return airportService.addAirport(existingAirport);
+    }
+
 }

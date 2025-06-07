@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useUser } from "../context/UserContext";
 import { FaUserCircle } from "react-icons/fa";
 import Modal from "./Modal";
@@ -10,7 +10,8 @@ import LoginPage from "./LoginPage";
 const Navbar = () => {
   const { user } = useUser();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [authMode, setAuthMode] = useState("login"); // 'login' or 'register'
+  const [authMode, setAuthMode] = useState("login");
+  const location = useLocation();
 
   const handleIconClick = () => {
     setAuthMode("login");
@@ -33,15 +34,30 @@ const Navbar = () => {
     <>
       <nav className="navbar">
         <div className="navbar-left">
-          <Link to="/" className="navbar-title">
+          <Link
+            to="/"
+            className={`navbar-title ${
+              location.pathname === "/" ? "active-link" : ""
+            }`}
+          >
             Flight Booking
           </Link>
         </div>
         <div className="navbar-right">
-          <Link to="/about" className="navbar-link">
+          <Link
+            to="/about"
+            className={`navbar-link ${
+              location.pathname === "/about" ? "active-link" : ""
+            }`}
+          >
             About
           </Link>
-          <Link to="/contact" className="navbar-link">
+          <Link
+            to="/contact"
+            className={`navbar-link ${
+              location.pathname === "/contact" ? "active-link" : ""
+            }`}
+          >
             Contact Us
           </Link>
           {user ? (
@@ -56,7 +72,6 @@ const Navbar = () => {
         </div>
       </nav>
 
-      {/* Modal */}
       <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
         {authMode === "login" ? (
           <LoginPage

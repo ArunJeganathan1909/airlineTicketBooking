@@ -3,27 +3,22 @@ package com.airline.airlinebooking.model;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
 @Data
-public class Flight {
+public class Booking {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String flightCode;
-    private String airlineName;
 
-    @ElementCollection
-    private List<String> departureAirportCodes;
-
-    private  String travelingTime;
+    private LocalDateTime outboundTime;
+    private LocalDateTime returnTime;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<FlyDetails> flyDetails;;
-
-    private BigDecimal ticketPrice;
+    private List<PassengerDetail> passengers;
 }

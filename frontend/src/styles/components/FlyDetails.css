@@ -1,0 +1,105 @@
+.flydetails-page {
+  padding: 20px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.flydetails-page h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.search-bar {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.search-bar input {
+  width: 80%;
+  max-width: 400px;
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.flydetails-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.flydetails-table th,
+.flydetails-table td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: left;
+}
+
+.flydetails-table th {
+  background-color: #f4f4f4;
+}
+
+.flydetails-table td button {
+  margin-right: 8px;
+  padding: 6px 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.flydetails-table td button:last-child {
+  background-color: #dc3545;
+}
+
+.flydetails-table td button:hover {
+  opacity: 0.9;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .search-bar input {
+    width: 95%;
+    font-size: 0.9rem;
+  }
+
+  .flydetails-table th,
+  .flydetails-table td {
+    padding: 8px;
+    font-size: 0.9rem;
+  }
+
+  .flydetails-table td button {
+    padding: 4px 8px;
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .flydetails-table thead {
+    display: none;
+  }
+
+  .flydetails-table tr {
+    display: block;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 10px;
+    background: #fff;
+  }
+
+  .flydetails-table td {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    border: none;
+  }
+
+  .flydetails-table td::before {
+    content: attr(data-label);
+    font-weight: bold;
+    text-transform: capitalize;
+  }
+}

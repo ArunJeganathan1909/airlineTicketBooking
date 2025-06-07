@@ -39,3 +39,8 @@
 .navbar-user-icon {
   cursor: pointer;
 }
+
+.active-link {
+  color: #ffd700; 
+  font-weight: bold;
+}

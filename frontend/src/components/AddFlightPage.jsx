@@ -1,16 +1,30 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../styles/components/AddFlightPage.css";
 
-const AddFlightPage = ({ onClose }) => {
+const AddFlightPage = ({ onClose, flightData }) => {
   const [flightCode, setFlightCode] = useState("");
   const [airlineName, setAirlineName] = useState("");
   const [departureAirportCodes, setDepartureAirportCodes] = useState("");
   const [travelingTime, setTravelingTime] = useState("");
 
+  useEffect(() => {
+    if (flightData) {
+      setFlightCode(flightData.flightCode);
+      setAirlineName(flightData.airlineName);
+      setDepartureAirportCodes(flightData.departureAirportCodes.join(", "));
+      setTravelingTime(flightData.travelingTime);
+    } else {
+      setFlightCode("");
+      setAirlineName("");
+      setDepartureAirportCodes("");
+      setTravelingTime("");
+    }
+  }, [flightData]);
+
   const handleFlightSubmit = async (e) => {
     e.preventDefault();
 
-    const flightData = {
+    const flightPayload = {
       flightCode,
       airlineName,
       departureAirportCodes: departureAirportCodes
@@ -21,22 +35,26 @@ const AddFlightPage = ({ onClose }) => {
     };
 
     try {
-      const response = await fetch("http://localhost:8080/api/flights", {
-        method: "POST",
+      const url = flightData
+        ? `http://localhost:8080/api/flights/${flightData.id}`
+        : "http://localhost:8080/api/flights";
+      const method = flightData ? "PUT" : "POST";
+
+      const response = await fetch(url, {
+        method,
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(flightData),
+        body: JSON.stringify(flightPayload),
       });
 
       if (response.ok) {
-        alert("Flight added successfully!");
-        // Reset form
-        setFlightCode("");
-        setAirlineName("");
-        setDepartureAirportCodes("");
-        setTravelingTime("");
-        onClose(); // Close modal and refresh flights
+        alert(
+          flightData
+            ? "Flight updated successfully!"
+            : "Flight added successfully!"
+        );
+        onClose();
       } else {
-        alert("Failed to add flight");
+        alert("Failed to save flight");
       }
     } catch (err) {
       console.error("Error:", err);
@@ -47,7 +65,7 @@ const AddFlightPage = ({ onClose }) => {
   return (
     <div className="add-flight-container">
       <div className="form-card">
-        <h2>Add New Flight</h2>
+        <h2>{flightData ? "Edit Flight" : "Add New Flight"}</h2>
         <form onSubmit={handleFlightSubmit} className="flight-form">
           <input
             type="text"
@@ -55,6 +73,7 @@ const AddFlightPage = ({ onClose }) => {
             value={flightCode}
             onChange={(e) => setFlightCode(e.target.value)}
             required
+            disabled={!!flightData} // Flight code is not editable during edit
           />
           <input
             type="text"
@@ -78,7 +97,7 @@ const AddFlightPage = ({ onClose }) => {
             required
           />
           <button type="submit" className="submit-button">
-            Add Flight
+            {flightData ? "Update Flight" : "Add Flight"}
           </button>
         </form>
       </div>

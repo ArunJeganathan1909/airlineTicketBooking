@@ -1,11 +1,25 @@
-import React, { useState } from "react";
-import "../styles/components/AddAirportPage.css"; 
+import React, { useState, useEffect } from "react";
+import "../styles/components/AddAirportPage.css";
 
-const AddAirportPage = () => {
+const AddAirportPage = ({ onClose, airportData }) => {
   const [airportName, setAirportName] = useState("");
   const [airportCode, setAirportCode] = useState("");
   const [country, setCountry] = useState("");
   const [city, setCity] = useState("");
+
+  useEffect(() => {
+    if (airportData) {
+      setAirportName(airportData.airportName);
+      setAirportCode(airportData.airportCode);
+      setCountry(airportData.country);
+      setCity(airportData.city);
+    } else {
+      setAirportName("");
+      setAirportCode("");
+      setCountry("");
+      setCity("");
+    }
+  }, [airportData]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -18,20 +32,26 @@ const AddAirportPage = () => {
     };
 
     try {
-      const res = await fetch("http://localhost:8080/api/airports", {
-        method: "POST",
+      const url = airportData
+        ? `http://localhost:8080/api/airports/${airportData.id}`
+        : "http://localhost:8080/api/airports";
+      const method = airportData ? "PUT" : "POST";
+
+      const res = await fetch(url, {
+        method,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newAirport),
       });
 
       if (res.ok) {
-        alert("Airport added successfully!");
-        setAirportName("");
-        setAirportCode("");
-        setCountry("");
-        setCity("");
+        alert(
+          airportData
+            ? "Airport updated successfully!"
+            : "Airport added successfully!"
+        );
+        onClose();
       } else {
-        alert("Failed to add airport.");
+        alert("Failed to save airport.");
       }
     } catch (err) {
       console.error(err);
@@ -42,7 +62,7 @@ const AddAirportPage = () => {
   return (
     <div className="airport-container">
       <div className="airport-form-card">
-        <h2>Add New Airport</h2>
+        <h2>{airportData ? "Edit Airport" : "Add New Airport"}</h2>
         <form onSubmit={handleSubmit} className="airport-form">
           <input
             type="text"
@@ -72,7 +92,9 @@ const AddAirportPage = () => {
             onChange={(e) => setCity(e.target.value)}
             required
           />
-          <button type="submit" className="submit-button">Add Airport</button>
+          <button type="submit" className="submit-button">
+            {airportData ? "Update Airport" : "Add Airport"}
+          </button>
         </form>
       </div>
     </div>

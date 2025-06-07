@@ -37,4 +37,18 @@ public class FlightController {
     public void deleteFlight(@PathVariable long id) {
         flightRepository.deleteById(id);
     }
+
+    @PutMapping("/{id}")
+    public Flight updateFlight(@PathVariable Long id, @RequestBody Flight updatedFlight) {
+        Flight existingFlight = flightRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Flight not found with ID: " + id));
+
+        existingFlight.setAirlineName(updatedFlight.getAirlineName());
+        existingFlight.setDepartureAirportCodes(updatedFlight.getDepartureAirportCodes());
+        existingFlight.setTravelingTime(updatedFlight.getTravelingTime());
+        // Note: Do not update flyDetails here, as it might be handled separately
+
+        return flightRepository.save(existingFlight);
+    }
+
 }
