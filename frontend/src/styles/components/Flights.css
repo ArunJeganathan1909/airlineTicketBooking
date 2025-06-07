@@ -1,25 +1,26 @@
 .flights-page {
   padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-.add-flight {
+.add-flight-button-container {
   margin-bottom: 20px;
+  text-align: right;
 }
 
-.add-flight-form {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.add-flight-form input {
-  padding: 8px;
-  flex: 1 1 200px;
-}
-
-.add-flight-form button {
-  padding: 8px 16px;
+.add-flight-button-container button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 4px;
   cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.add-flight-button-container button:hover {
+  background-color: #0056b3;
 }
 
 .search-bar {
@@ -28,18 +29,22 @@
 
 .search-bar input {
   width: 100%;
-  padding: 8px;
+  max-width: 400px;
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
 }
 
 .flights-table {
   width: 100%;
   border-collapse: collapse;
+  overflow-x: auto;
 }
 
 .flights-table th,
 .flights-table td {
   border: 1px solid #ddd;
-  padding: 8px;
+  padding: 12px;
   text-align: left;
 }
 
@@ -47,13 +52,36 @@
   background-color: #f2f2f2;
 }
 
+.flights-table td {
+  word-wrap: break-word;
+}
+
+
 .flights-table button {
   margin-right: 8px;
-  padding: 4px 8px;
+  padding: 6px 10px;
+  color: white;
+  border: none;
+  border-radius: 4px;
   cursor: pointer;
 }
 
-/* Modal Overlay */
+.flights-table button:hover {
+  opacity: 0.9;
+}
+
+.edit {
+  background-color: #28a745; /* Green */
+}
+
+.delete {
+  background-color: #dc3545; /* Red */
+}
+
+.add {
+  background-color: #6c757d; /* Grey */
+}
+
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -65,19 +93,18 @@
   align-items: center;
   justify-content: center;
   z-index: 999;
+  padding: 10px;
 }
 
-/* Modal Content */
 .modal-content {
   background: white;
   padding: 20px;
   border-radius: 8px;
-  width: 90%;
+  width: 100%;
   max-width: 500px;
   position: relative;
 }
 
-/* Close Button */
 .close-button {
   position: absolute;
   top: 8px;
@@ -86,4 +113,47 @@
   border: none;
   background: none;
   cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .flights-table th,
+  .flights-table td {
+    padding: 8px;
+    font-size: 14px;
+  }
+
+  .add-flight-button-container button {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .search-bar input {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .flights-page {
+    padding: 10px;
+  }
+
+  .search-bar input {
+    max-width: 100%;
+  }
+
+  .flights-table th,
+  .flights-table td {
+    font-size: 12px;
+    padding: 8px 6px;
+  }
+
+  .flights-table button {
+    font-size: 12px;
+    padding: 5px 8px;
+    margin: 2px 2px;
+  }
+
+  .add-flight-button-container button {
+    font-size: 14px;
+  }
 }

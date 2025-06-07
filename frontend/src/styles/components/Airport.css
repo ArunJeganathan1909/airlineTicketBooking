@@ -1,0 +1,133 @@
+.airport-page {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.top-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.top-bar input {
+  flex: 1 1 300px;
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+.top-bar button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.top-bar button:hover {
+  background-color: #0056b3;
+}
+
+.airport-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.airport-table th,
+.airport-table td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: left;
+}
+
+.airport-table th {
+  background-color: #f2f2f2;
+}
+
+.airport-table button {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  cursor: pointer;
+  margin-right: 6px;
+  transition: background-color 0.3s;
+}
+
+.airport-table .edit-button {
+  background-color: #28a745;
+}
+
+.airport-table .edit-button:hover {
+  background-color: #218838;
+}
+
+.airport-table .delete-button {
+  background-color: #dc3545;
+}
+
+.airport-table .delete-button:hover {
+  background-color: #c82333;
+}
+
+/* Modal Overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  padding: 10px;
+}
+
+/* Modal Content */
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 500px;
+  position: relative;
+}
+
+/* Close Button */
+.close-button {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  font-size: 24px;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .airport-table th,
+  .airport-table td {
+    padding: 8px;
+    font-size: 14px;
+  }
+
+  .top-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .top-bar input {
+    width: 100%;
+  }
+
+  .top-bar button {
+    width: 100%;
+  }
+}

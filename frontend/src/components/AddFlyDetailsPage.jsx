@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
 import "../styles/components/AddFlyDetailsPage.css"; // Ensure the path is correct
 
-const AddFlyDetailsPage = () => {
-  const { flightCode } = useParams();
+const AddFlyDetailsPage = ({ flightCode }) => {
+  // const { flightCode } = useParams();
 
   const [departureAirportCode, setDepartureAirportCode] = useState("");
   const [arrivalAirportCode, setArrivalAirportCode] = useState("");

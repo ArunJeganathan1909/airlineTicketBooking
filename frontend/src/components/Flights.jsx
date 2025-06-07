@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react";
 import AddFlightPage from "./AddFlightPage";
+import AddFlyDetailsPage from "./AddFlyDetailsPage";
 import "../styles/components/Flights.css";
 
 const Flights = () => {
   const [flights, setFlights] = useState([]);
   const [filteredFlights, setFilteredFlights] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [showAddModal, setShowAddModal] = useState(false);
+  const [showAddFlightModal, setShowAddFlightModal] = useState(false);
+  const [showAddFlyDetailsModal, setShowAddFlyDetailsModal] = useState(false);
+  const [selectedFlightCode, setSelectedFlightCode] = useState("");
 
   // Fetch all flights on mount
   useEffect(() => {
@@ -52,9 +55,23 @@ const Flights = () => {
     alert("Edit functionality to be implemented!");
   };
 
-  const handleCloseModal = () => {
-    setShowAddModal(false);
+  const handleOpenAddFlightModal = () => {
+    setShowAddFlightModal(true);
+  };
+
+  const handleCloseAddFlightModal = () => {
+    setShowAddFlightModal(false);
     fetchFlights(); // Refresh the list after adding
+  };
+
+  const handleOpenAddFlyDetailsModal = (flightCode) => {
+    setSelectedFlightCode(flightCode);
+    setShowAddFlyDetailsModal(true);
+  };
+
+  const handleCloseAddFlyDetailsModal = () => {
+    setShowAddFlyDetailsModal(false);
+    setSelectedFlightCode("");
   };
 
   return (
@@ -63,7 +80,7 @@ const Flights = () => {
 
       {/* Add Flight Button */}
       <div className="add-flight-button-container">
-        <button onClick={() => setShowAddModal(true)}>Add Flight</button>
+        <button onClick={handleOpenAddFlightModal}>Add Flight</button>
       </div>
 
       {/* Search Bar */}
@@ -92,9 +109,15 @@ const Flights = () => {
               <td>{flight.flightCode}</td>
               <td>{flight.airlineName}</td>
               <td>{flight.departureAirportCodes.join(", ")}</td>
-              <td>
-                <button onClick={() => handleEdit(flight)}>Edit</button>
-                <button onClick={() => handleDelete(flight.id)}>Delete</button>
+              <td className="action">
+                <button onClick={() => handleEdit(flight)} className="edit">Edit</button>
+                <button onClick={() => handleDelete(flight.id)} className="delete">Delete</button>
+                <button
+                  onClick={() => handleOpenAddFlyDetailsModal(flight.flightCode)}
+                  className="add"
+                >
+                  Add Fly Details
+                </button>
               </td>
             </tr>
           ))}
@@ -102,13 +125,28 @@ const Flights = () => {
       </table>
 
       {/* Add Flight Modal */}
-      {showAddModal && (
+      {showAddFlightModal && (
         <div className="modal-overlay">
           <div className="modal-content">
-            <button className="close-button" onClick={handleCloseModal}>
+            <button className="close-button" onClick={handleCloseAddFlightModal}>
               &times;
             </button>
-            <AddFlightPage onClose={handleCloseModal} />
+            <AddFlightPage onClose={handleCloseAddFlightModal} />
+          </div>
+        </div>
+      )}
+
+      {/* Add Fly Details Modal */}
+      {showAddFlyDetailsModal && selectedFlightCode && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <button
+              className="close-button"
+              onClick={handleCloseAddFlyDetailsModal}
+            >
+              &times;
+            </button>
+            <AddFlyDetailsPage flightCode={selectedFlightCode} />
           </div>
         </div>
       )}
