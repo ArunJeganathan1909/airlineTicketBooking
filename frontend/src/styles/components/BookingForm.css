@@ -1,0 +1,113 @@
+/* General Container */
+.booking-container {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Headings */
+.booking-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #004aad;
+}
+
+/* Flight Details Section */
+.flight-details {
+  background-color: #f2f8ff;
+  padding: 15px;
+  border-left: 5px solid #004aad;
+  border-radius: 4px;
+  margin-bottom: 20px;
+}
+
+.flight-details h3 {
+  margin-top: 0;
+  color: #004aad;
+}
+
+.flight-details p {
+  margin: 5px 0;
+  font-size: 0.95rem;
+}
+
+/* Traveler Form Section */
+.traveler-form h3 {
+  color: #004aad;
+  margin-bottom: 10px;
+}
+
+/* Traveler Fields */
+.traveler-fields {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.traveler-fields input,
+.traveler-fields select {
+  flex: 1 1 200px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.traveler-fields input:focus,
+.traveler-fields select:focus {
+  outline: none;
+  border-color: #004aad;
+  box-shadow: 0 0 5px rgba(0, 74, 173, 0.2);
+}
+
+/* Add Traveler Button */
+.traveler-form button[type="button"] {
+  background-color: #28a745;
+  color: #ffffff;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-bottom: 20px;
+  font-size: 0.95rem;
+}
+
+.traveler-form button[type="button"]:hover {
+  background-color: #218838;
+}
+
+/* Submit Button */
+.submit-button {
+  background-color: #004aad;
+  color: #ffffff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.submit-button:hover {
+  background-color: #003580;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  .traveler-fields {
+    flex-direction: column;
+  }
+
+  .traveler-fields input,
+  .traveler-fields select {
+    flex: 1 1 100%;
+  }
+
+  .traveler-form button[type="button"],
+  .submit-button {
+    width: 100%;
+    margin-top: 10px;
+  }
+}

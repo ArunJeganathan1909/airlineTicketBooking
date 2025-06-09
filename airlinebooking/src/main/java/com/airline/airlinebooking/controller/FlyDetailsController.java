@@ -101,10 +101,5 @@ public class FlyDetailsController {
         return flyDetailsRepository.save(existingDetail);
     }
 
-<<<<<<< HEAD
 
-
-
-=======
->>>>>>> 85025cb4231066eb797020bf3956e7b46509f3e1
 }

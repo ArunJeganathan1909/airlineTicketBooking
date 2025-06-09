@@ -14,6 +14,7 @@ import Flights from "./components/Flights";
 import AdminWelcome from "./components/AdminWelcome";
 import FlyDetails from "./components/FlyDetails";
 import Airport from "./components/Airport";
+import BookingForm from "./components/BookingForm";
 
 const App = () => {
   return (
@@ -41,6 +42,7 @@ const App = () => {
             path="/filtered-flights"
             element={<FilteredFlyDetailsPage />}
           />
+          <Route path="/flight-booking" element ={<BookingForm />} />
         </Routes>
       </UserProvider>
     </Router>

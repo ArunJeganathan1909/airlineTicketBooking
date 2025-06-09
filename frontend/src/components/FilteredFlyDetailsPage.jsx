@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import "../styles/components/FilteredFlyDetailsPage.css";
 
 const FilteredFlyDetailsPage = () => {
   const [searchParams] = useSearchParams();
   const [results, setResults] = useState([]);
+  const navigate = useNavigate();
 
   const departure = searchParams.get("departure");
   const arrival = searchParams.get("arrival");
@@ -31,16 +32,13 @@ const FilteredFlyDetailsPage = () => {
   }, [departure, arrival, date, returnDate]);
 
   const handleBookTicket = (pair) => {
-    const outboundCode = pair[0]?.flightCode;
-    const returnCode = pair[1]?.flightCode;
-
-    alert(
-      `Booking ticket:\nOutbound Flight: ${outboundCode}\nReturn Flight: ${
-        returnCode || "N/A"
-      }`
-    );
+    navigate("/flight-booking", {
+      state: {
+        outbound: pair[0],
+        returnFlight: pair[1] || null,
+      },
+    });
   };
-
   return (
     <div className="page-container">
       <h2>Filtered Flights</h2>
@@ -51,20 +49,23 @@ const FilteredFlyDetailsPage = () => {
           {results.map((pair, index) => (
             <div key={index} className="flight-item">
               <div className="flight-info">
-                <strong>Outbound:</strong> Flight Code: {pair[0].flightCode} | Departure:{" "}
-                {new Date(pair[0].departureTime).toLocaleString()} | Arrival:{" "}
-                {new Date(pair[0].arrivalTime).toLocaleString()}
+                <strong>Outbound:</strong> Flight Code: {pair[0].flightCode} |
+                Departure: {new Date(pair[0].departureTime).toLocaleString()} |
+                Arrival: {new Date(pair[0].arrivalTime).toLocaleString()}
               </div>
 
               {pair.length > 1 && (
                 <div className="flight-info">
-                  <strong>Return:</strong> Flight Code: {pair[1].flightCode} | Departure:{" "}
-                  {new Date(pair[1].departureTime).toLocaleString()} | Arrival:{" "}
-                  {new Date(pair[1].arrivalTime).toLocaleString()}
+                  <strong>Return:</strong> Flight Code: {pair[1].flightCode} |
+                  Departure: {new Date(pair[1].departureTime).toLocaleString()}{" "}
+                  | Arrival: {new Date(pair[1].arrivalTime).toLocaleString()}
                 </div>
               )}
 
-              <button className="book-button" onClick={() => handleBookTicket(pair)}>
+              <button
+                className="book-button"
+                onClick={() => handleBookTicket(pair)}
+              >
                 Book Ticket
               </button>
             </div>

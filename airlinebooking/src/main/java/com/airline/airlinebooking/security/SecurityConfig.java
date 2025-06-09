@@ -19,7 +19,6 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-
         http
                 .cors()
                 .and()
@@ -30,11 +29,14 @@ public class SecurityConfig {
                         .requestMatchers("/api/flights/**").permitAll()
                         .requestMatchers("/api/fly-details/**").permitAll()
                         .requestMatchers("/api/airports/**").permitAll()
+                        .requestMatchers("/api/bookings/**").permitAll()
                         .anyRequest().authenticated()
-                );
+                )
+                .httpBasic();  // If needed
 
         return http.build();
     }
+
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
