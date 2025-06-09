@@ -1,19 +1,13 @@
 import React, { useEffect, useState } from "react";
-<<<<<<< HEAD
 import AddFlyDetailsPage from "./AddFlyDetailsPage";
-=======
->>>>>>> 85025cb4231066eb797020bf3956e7b46509f3e1
 import "../styles/components/FlyDetails.css";
 
 const FlyDetails = () => {
   const [flyDetails, setFlyDetails] = useState([]);
   const [filteredDetails, setFilteredDetails] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-<<<<<<< HEAD
   const [showModal, setShowModal] = useState(false);
   const [selectedDetail, setSelectedDetail] = useState(null);
-=======
->>>>>>> 85025cb4231066eb797020bf3956e7b46509f3e1
 
   useEffect(() => {
     fetchFlyDetails();
@@ -57,7 +51,6 @@ const FlyDetails = () => {
   };
 
   const handleEdit = (detail) => {
-<<<<<<< HEAD
     setSelectedDetail(detail);
     setShowModal(true);
   };
@@ -66,10 +59,6 @@ const FlyDetails = () => {
     setShowModal(false);
     setSelectedDetail(null);
     fetchFlyDetails();
-=======
-    alert("Edit functionality to be implemented!");
-    // For real implementation, show a modal or pre-fill the form with detail data
->>>>>>> 85025cb4231066eb797020bf3956e7b46509f3e1
   };
 
   return (
@@ -112,7 +101,6 @@ const FlyDetails = () => {
           ))}
         </tbody>
       </table>
-<<<<<<< HEAD
 
       {/* Modal */}
       {showModal && (
@@ -128,8 +116,6 @@ const FlyDetails = () => {
           </div>
         </div>
       )}
-=======
->>>>>>> 85025cb4231066eb797020bf3956e7b46509f3e1
     </div>
   );
 };
