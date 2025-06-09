@@ -7,7 +7,10 @@ const Airport = () => {
   const [filteredAirports, setFilteredAirports] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [showAddModal, setShowAddModal] = useState(false);
+<<<<<<< HEAD
   const [selectedAirport, setSelectedAirport] = useState(null);
+=======
+>>>>>>> 85025cb4231066eb797020bf3956e7b46509f3e1
 
   useEffect(() => {
     fetchAirports();
@@ -38,8 +41,12 @@ const Airport = () => {
   };
 
   const handleDelete = async (id) => {
+<<<<<<< HEAD
     if (!window.confirm("Are you sure you want to delete this airport?"))
       return;
+=======
+    if (!window.confirm("Are you sure you want to delete this airport?")) return;
+>>>>>>> 85025cb4231066eb797020bf3956e7b46509f3e1
     try {
       await fetch(`http://localhost:8080/api/airports/${id}`, {
         method: "DELETE",
@@ -52,14 +59,22 @@ const Airport = () => {
   };
 
   const handleEdit = (airport) => {
+<<<<<<< HEAD
     setSelectedAirport(airport);
     setShowAddModal(true);
+=======
+    alert("Edit functionality to be implemented!");
+>>>>>>> 85025cb4231066eb797020bf3956e7b46509f3e1
   };
 
   const handleCloseModal = () => {
     setShowAddModal(false);
+<<<<<<< HEAD
     setSelectedAirport(null);
     fetchAirports();
+=======
+    fetchAirports(); // Refresh the list after adding
+>>>>>>> 85025cb4231066eb797020bf3956e7b46509f3e1
   };
 
   return (
@@ -74,6 +89,7 @@ const Airport = () => {
           value={searchQuery}
           onChange={handleSearch}
         />
+<<<<<<< HEAD
         <button
           onClick={() => {
             setSelectedAirport(null);
@@ -82,6 +98,9 @@ const Airport = () => {
         >
           Add Airport
         </button>
+=======
+        <button onClick={() => setShowAddModal(true)}>Add Airport</button>
+>>>>>>> 85025cb4231066eb797020bf3956e7b46509f3e1
       </div>
 
       {/* Airport Table */}
@@ -103,6 +122,7 @@ const Airport = () => {
               <td>{airport.city}</td>
               <td>{airport.country}</td>
               <td>
+<<<<<<< HEAD
                 <button
                   className="edit-button"
                   onClick={() => handleEdit(airport)}
@@ -115,6 +135,10 @@ const Airport = () => {
                 >
                   Delete
                 </button>
+=======
+                <button className="edit-button" onClick={() => handleEdit(airport)}>Edit</button>
+                <button className="delete-button" onClick={() => handleDelete(airport.id)}>Delete</button>
+>>>>>>> 85025cb4231066eb797020bf3956e7b46509f3e1
               </td>
             </tr>
           ))}
@@ -128,10 +152,14 @@ const Airport = () => {
             <button className="close-button" onClick={handleCloseModal}>
               &times;
             </button>
+<<<<<<< HEAD
             <AddAirportPage
               onClose={handleCloseModal}
               airportData={selectedAirport}
             />
+=======
+            <AddAirportPage onClose={handleCloseModal} />
+>>>>>>> 85025cb4231066eb797020bf3956e7b46509f3e1
           </div>
         </div>
       )}
