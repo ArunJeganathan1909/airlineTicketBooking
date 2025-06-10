@@ -46,9 +46,10 @@ public class FlightController {
         existingFlight.setAirlineName(updatedFlight.getAirlineName());
         existingFlight.setDepartureAirportCodes(updatedFlight.getDepartureAirportCodes());
         existingFlight.setTravelingTime(updatedFlight.getTravelingTime());
-        // Note: Do not update flyDetails here, as it might be handled separately
+        existingFlight.setTicketPrice(updatedFlight.getTicketPrice());
 
         return flightRepository.save(existingFlight);
     }
+
 
 }

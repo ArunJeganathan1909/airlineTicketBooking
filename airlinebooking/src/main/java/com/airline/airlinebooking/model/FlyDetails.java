@@ -20,12 +20,13 @@ public class FlyDetails {
     private String departureAirportCode;
     private String arrivalAirportCode;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private LocalDateTime departureTime;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private LocalDateTime arrivalTime;
 
     @Column(name = "rest_time")
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Duration restTime;
 }

@@ -68,8 +68,6 @@ const RegisterPage = ({ switchToLogin, closeModal }) => {
             required
           >
             <option value="CUSTOMER">Customer</option>
-            <option value="OPERATOR">Operator</option>
-            <option value="ADMIN">Admin</option>
           </select>
           <button type="submit">Register</button>
           <div className="auth-footer">

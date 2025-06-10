@@ -77,4 +77,15 @@ public class UserService {
     public Optional<User> getUserByEmail(String email) {
         return userRepository.findByEmail(email);
     }
+
+    public User save(User user) {
+        return userRepository.save(user);
+    }
+
+    public void changePassword(Long userId, String newPassword) {
+        User user = getUserById(userId);
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
+    }
+
 }

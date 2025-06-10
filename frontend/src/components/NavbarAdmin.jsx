@@ -44,6 +44,14 @@ const NavbarAdmin = () => {
         >
           Airports
         </Link>
+        <Link
+          to="/admin/booking-list"
+          className={`navbar-link ${
+            location.pathname === "/admin/booking-list" ? "active-link" : ""
+          }`}
+        >
+          Booking
+        </Link>
         {user && <span className="navbar-user">{user.username}</span>}
       </div>
     </nav>

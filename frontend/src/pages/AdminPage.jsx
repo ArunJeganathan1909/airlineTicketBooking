@@ -11,7 +11,6 @@ const AdminPage = () => {
       <main className="admin-content">
         <Outlet /> {/* 👈 this is where nested routes (like Flights) will render */}
       </main>
-      <Footer />
     </div>
   );
 };

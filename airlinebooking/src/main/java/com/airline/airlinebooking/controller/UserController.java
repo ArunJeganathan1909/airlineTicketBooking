@@ -3,9 +3,11 @@ package com.airline.airlinebooking.controller;
 import com.airline.airlinebooking.model.User;
 import com.airline.airlinebooking.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -60,4 +62,21 @@ public class UserController {
         }
 
     }
+
+    @PutMapping("/users/{id}")
+    public User updateUser(@PathVariable Long id, @RequestBody User updatedUser) {
+        User user = userService.getUserById(id);
+        user.setUsername(updatedUser.getUsername());
+        user.setEmail(updatedUser.getEmail());
+        return userService.save(user);
+    }
+
+    @PostMapping("/users/{id}/change-password")
+    public ResponseEntity<?> changePassword(@PathVariable Long id, @RequestBody Map<String, String> body) {
+        String newPassword = body.get("password");
+        userService.changePassword(id, newPassword);
+        return ResponseEntity.ok("Password changed successfully");
+    }
+
+
 }

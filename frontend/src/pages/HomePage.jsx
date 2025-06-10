@@ -11,7 +11,6 @@ const HomePage = () => {
       <main className="main-content">
         <FlightBookingForm />
       </main>
-      <Footer />
     </div>
   );
 };

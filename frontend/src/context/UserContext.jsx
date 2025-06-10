@@ -21,20 +21,25 @@ export const UserProvider = ({ children }) => {
     const userData = await res.json();
     setUser(userData);
 
-    // Show username in console
     console.log(`${userData.username} logged in`);
-
-    // Show alert
     alert(`${userData.username} logged in`);
 
-    // Role-based redirection
     if (userData.role === "ADMIN") navigate("/admin");
     else if (userData.role === "OPERATOR") navigate("/operator");
-    else navigate(-1);
+    else navigate("/");
+  };
+
+  // ADD logout function
+  const logout = () => {
+    setUser(null); // clear user state
+    // Optionally clear localStorage/sessionStorage if used
+    // localStorage.removeItem("token"); // example
+
+    navigate("/"); // redirect to login page
   };
 
   return (
-    <UserContext.Provider value={{ user, login }}>
+    <UserContext.Provider value={{ user, login, logout }}>
       {children}
     </UserContext.Provider>
   );

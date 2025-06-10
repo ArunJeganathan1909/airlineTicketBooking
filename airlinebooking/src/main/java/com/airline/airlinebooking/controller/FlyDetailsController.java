@@ -5,6 +5,8 @@ import com.airline.airlinebooking.repository.FlyDetailsRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import com.airline.airlinebooking.model.Flight;
+import com.airline.airlinebooking.repository.FlightRepository;
 
 import java.time.Duration;
 import java.time.LocalDate;
@@ -19,6 +21,92 @@ public class FlyDetailsController {
 
     @Autowired
     private FlyDetailsRepository flyDetailsRepository;
+
+    @Autowired
+    private FlightRepository flightRepository;
+
+    @PostMapping("/flight/{flightCode}")
+    @Transactional
+    public List<FlyDetails> addFlyDetailsToFlight(@PathVariable String flightCode, @RequestBody FlyDetails flyDetails) {
+        Flight flight = flightRepository.findAll().stream()
+                .filter(f -> f.getFlightCode().equalsIgnoreCase(flightCode))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("Flight not found with flightCode: " + flightCode));
+
+        flyDetails.setFlightCode(flightCode);
+        FlyDetails outbound = flyDetailsRepository.save(flyDetails);
+        flight.getFlyDetails().add(outbound);
+
+        List<FlyDetails> generatedDetails = new ArrayList<>();
+        generatedDetails.add(outbound);
+
+        Duration travelDuration = parseDurationFromString(flight.getTravelingTime());
+
+        LocalDateTime nextDeparture = outbound.getArrivalTime().plus(outbound.getRestTime());
+        LocalDateTime endDate = outbound.getDepartureTime().plusDays(10);
+
+        FlyDetails previous = outbound;
+
+        while (nextDeparture.isBefore(endDate)) {
+            LocalDate flightDay = nextDeparture.toLocalDate();
+
+            // Check if this flightCode has less than 4 flights for this date
+            long flightCountForDay = flyDetailsRepository.findByFlightCode(flightCode).stream()
+                    .filter(f -> f.getDepartureTime().toLocalDate().equals(flightDay))
+                    .count();
+
+            if (flightCountForDay >= 4) {
+                // Skip this day (advance to the next day)
+                nextDeparture = nextDeparture.plusDays(1).withHour(0).withMinute(0);
+                continue;
+            }
+
+            FlyDetails next = new FlyDetails();
+            next.setFlightCode(flightCode);
+
+            // Always set departure from the last arrival airport
+            next.setDepartureAirportCode(previous.getArrivalAirportCode());
+
+            // Decide the arrival airport by toggling between the first outbound route
+            if (next.getDepartureAirportCode().equalsIgnoreCase(outbound.getDepartureAirportCode())) {
+                next.setArrivalAirportCode(outbound.getArrivalAirportCode());
+            } else {
+                next.setArrivalAirportCode(outbound.getDepartureAirportCode());
+            }
+
+            next.setDepartureTime(nextDeparture);
+            next.setArrivalTime(nextDeparture.plus(travelDuration));
+            next.setRestTime(outbound.getRestTime());
+
+            // Check for duplicates
+            boolean exists = flyDetailsRepository.existsByFlightCodeAndDepartureAirportCodeAndArrivalAirportCodeAndDepartureTime(
+                    next.getFlightCode(),
+                    next.getDepartureAirportCode(),
+                    next.getArrivalAirportCode(),
+                    next.getDepartureTime()
+            );
+
+            if (!exists) {
+                FlyDetails saved = flyDetailsRepository.save(next);
+                flight.getFlyDetails().add(saved);
+                generatedDetails.add(saved);
+            }
+
+            nextDeparture = next.getArrivalTime().plus(next.getRestTime());
+            previous = next;
+        }
+
+        flightRepository.save(flight);
+        return generatedDetails;
+    }
+
+    private Duration parseDurationFromString(String timeStr) {
+        try {
+            return Duration.parse("PT" + timeStr.toUpperCase().replace("H", "H").replace("M", "M"));
+        } catch (Exception e) {
+            throw new RuntimeException("Invalid travelingTime format. Expected something like '2H30M'.");
+        }
+    }
 
     @GetMapping
     public List<FlyDetails> getAllFlyDetails() {

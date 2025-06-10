@@ -1,0 +1,104 @@
+.user-profile {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  background: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 0 8px rgba(0,0,0,0.1);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+}
+
+.user-profile h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-size: 2rem;
+}
+
+.user-profile p {
+  font-size: 1rem;
+  margin: 0.5rem 0;
+}
+
+.user-profile strong {
+  color: #555;
+}
+
+.edit-form label {
+  display: block;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  color: #444;
+}
+
+.edit-form input {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  margin-top: 0.3rem;
+  font-size: 1rem;
+  border: 1.5px solid #ccc;
+  border-radius: 4px;
+  transition: border-color 0.3s ease;
+}
+
+.edit-form input:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+button {
+  background-color: #007bff;
+  color: white;
+  padding: 0.5rem 1.2rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 0.8rem;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+.password-change {
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.password-change input {
+  padding: 0.5rem 0.75rem;
+  font-size: 1rem;
+  width: 60%;
+  max-width: 300px;
+  margin-bottom: 0.75rem;
+  border: 1.5px solid #ccc;
+  border-radius: 4px;
+}
+
+.password-change button {
+  margin: 0 0.4rem 0.8rem 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .user-profile {
+    margin: 1rem;
+    padding: 1rem;
+  }
+
+  .edit-form input,
+  .password-change input {
+    width: 100%;
+  }
+
+  button {
+    width: 100%;
+    margin: 0.4rem 0;
+  }
+
+  .password-change button {
+    width: 48%;
+  }
+}

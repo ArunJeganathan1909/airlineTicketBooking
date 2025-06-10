@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useUser } from "../context/UserContext";
 import { FaUserCircle } from "react-icons/fa";
 import Modal from "./Modal";
@@ -12,6 +12,7 @@ const Navbar = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [authMode, setAuthMode] = useState("login");
   const location = useLocation();
+  const navigate = useNavigate(); // 🆕 Hook for navigation
 
   const handleIconClick = () => {
     setAuthMode("login");
@@ -28,6 +29,10 @@ const Navbar = () => {
 
   const switchToLogin = () => {
     setAuthMode("login");
+  };
+
+  const handleUsernameClick = () => {
+    navigate("/profile");
   };
 
   return (
@@ -61,7 +66,9 @@ const Navbar = () => {
             Contact Us
           </Link>
           {user ? (
-            <span className="navbar-user">{user.username}</span>
+            <span className="navbar-user" onClick={handleUsernameClick}>
+              {user.username}
+            </span>
           ) : (
             <FaUserCircle
               className="navbar-user-icon"

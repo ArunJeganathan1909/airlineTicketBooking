@@ -28,6 +28,8 @@ const FlightBookingForm = () => {
   const travellerRef = useRef(null);
   const navigate = useNavigate();
 
+  const totalTravelers = adultCount + childCount + infantCount;
+
   useEffect(() => {
     fetch("http://localhost:8080/api/airports")
       .then((res) => res.json())
@@ -103,12 +105,14 @@ const FlightBookingForm = () => {
     const returningDate =
       tripType === "round" ? roundTripEnd?.toISOString().split("T")[0] : null;
 
+    const totalTravelers = adultCount + childCount + infantCount;
+
     if (departureCode && arrivalCode && leavingDate) {
       let query = `/filtered-flights?departure=${departureCode}&arrival=${arrivalCode}&date=${leavingDate}`;
       if (returningDate) {
         query += `&returnDate=${returningDate}`;
       }
-      navigate(query);
+      navigate(query, { state: { totalTravelers } });
     } else {
       alert("Please select valid departure, destination and date");
     }

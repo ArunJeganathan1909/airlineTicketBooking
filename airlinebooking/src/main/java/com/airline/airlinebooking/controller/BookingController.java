@@ -29,4 +29,9 @@ public class BookingController {
     public List<Booking> getBookingsByFlightCode(@PathVariable String flightCode) {
         return bookingRepository.findByFlightCode(flightCode);
     }
+
+    @GetMapping("/user/{username}")
+    public List<Booking> getBookingsByUser(@PathVariable String username) {
+        return bookingRepository.findByUsername(username);
+    }
 }

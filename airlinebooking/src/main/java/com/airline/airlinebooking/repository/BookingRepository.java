@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface BookingRepository extends JpaRepository<Booking, Long> {
     List<Booking> findByFlightCode(String flightCode);
+    List<Booking> findByUsername(String username);
 }

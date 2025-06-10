@@ -1,0 +1,102 @@
+/* ProfilePage.css */
+
+.profile-page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 1rem;
+  font-family: Arial, sans-serif;
+  background-color: #f9f9f9;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #0077cc;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  color: white;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.nav-left,
+.nav-right {
+  display: flex;
+  align-items: center;
+}
+
+.nav-left {
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.nav-link {
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.nav-link:hover,
+.nav-link:focus {
+  background-color: #005fa3;
+}
+
+.logout-button {
+  background-color: #e74c3c;
+  border: none;
+  color: white;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.logout-button:hover,
+.logout-button:focus {
+  background-color: #c0392b;
+}
+
+.profile-content {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 6px;
+  box-shadow: 0 0 8px rgb(0 0 0 / 0.1);
+  flex-grow: 1;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .navbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+  }
+
+  .nav-left,
+  .nav-right {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .nav-left {
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .nav-link {
+    flex-grow: 1;
+    text-align: center;
+  }
+
+  .logout-button {
+    width: 100%;
+  }
+}

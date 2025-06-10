@@ -6,6 +6,7 @@ const AddFlightPage = ({ onClose, flightData }) => {
   const [airlineName, setAirlineName] = useState("");
   const [departureAirportCodes, setDepartureAirportCodes] = useState("");
   const [travelingTime, setTravelingTime] = useState("");
+  const [ticketPrice, setTicketPrice] = useState("");
 
   useEffect(() => {
     if (flightData) {
@@ -13,11 +14,13 @@ const AddFlightPage = ({ onClose, flightData }) => {
       setAirlineName(flightData.airlineName);
       setDepartureAirportCodes(flightData.departureAirportCodes.join(", "));
       setTravelingTime(flightData.travelingTime);
+      setTicketPrice(flightData.ticketPrice || "");
     } else {
       setFlightCode("");
       setAirlineName("");
       setDepartureAirportCodes("");
       setTravelingTime("");
+      setTicketPrice("");
     }
   }, [flightData]);
 
@@ -32,6 +35,7 @@ const AddFlightPage = ({ onClose, flightData }) => {
         .map((code) => code.trim()),
       travelingTime,
       flyDetails: [],
+      ticketPrice: parseFloat(ticketPrice),
     };
 
     try {
@@ -94,6 +98,14 @@ const AddFlightPage = ({ onClose, flightData }) => {
             placeholder="Traveling Time (e.g., 2H30M)"
             value={travelingTime}
             onChange={(e) => setTravelingTime(e.target.value)}
+            required
+          />
+          <input
+            type="number"
+            step="0.01"
+            placeholder="Ticket Price (e.g., 250.00)"
+            value={ticketPrice}
+            onChange={(e) => setTicketPrice(e.target.value)}
             required
           />
           <button type="submit" className="submit-button">
