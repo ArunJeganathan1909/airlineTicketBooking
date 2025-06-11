@@ -1,15 +1,23 @@
 import React from 'react';
-import { Outlet } from 'react-router-dom'; // 👈
+import { Navigate, Outlet } from 'react-router-dom'; 
 import NavbarAdmin from '../components/NavbarAdmin';
-import Footer from '../components/Footer';
 import '../styles/pages/AdminPage.css';
+import { useUser } from '../context/UserContext';
 
 const AdminPage = () => {
+  const { user } = useUser();
+
+  // If no user or not admin, redirect
+  if (!user || user.role !== 'ADMIN') {
+    return <Navigate to="/" replace />;
+  }
+
+   // Otherwise, render nested routes (Outlet)
   return (
     <div>
       <NavbarAdmin />
       <main className="admin-content">
-        <Outlet /> {/* 👈 this is where nested routes (like Flights) will render */}
+        <Outlet /> 
       </main>
     </div>
   );
