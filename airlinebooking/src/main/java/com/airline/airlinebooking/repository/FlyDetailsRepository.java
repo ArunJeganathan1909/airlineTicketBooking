@@ -28,4 +28,3 @@ public interface FlyDetailsRepository extends JpaRepository<FlyDetails, Long> {
     long countByFlightCodeAndDepartureTimeBetween(String flightCode, LocalDateTime start, LocalDateTime end);
 
 }
-
