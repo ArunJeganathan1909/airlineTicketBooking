@@ -52,7 +52,11 @@ const NavbarAdmin = () => {
         >
           Booking
         </Link>
-        {user && <span className="navbar-user">{user.username}</span>}
+        {user && (
+          <Link to="/admin/profile" className="navbar-user">
+            {user.username}
+          </Link>
+        )}
       </div>
     </nav>
   );

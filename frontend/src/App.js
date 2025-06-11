@@ -20,6 +20,7 @@ import ProfilePage from "./components/ProfilePage";
 import UserProfile from "./components/UserProfile";
 import UserBooking from "./components/UserBooking";
 import Footer from "./components/Footer";
+import AdminProfile from "./components/AdminProfile";
 
 const App = () => {
   return (
@@ -35,6 +36,7 @@ const App = () => {
                 <Route path="fly-details" element={<FlyDetails />} />
                 <Route path="airports" element={<Airport />} />
                 <Route path="booking-list" element={<BookingList />} />
+                <Route path="profile" element={<AdminProfile />} />
               </Route>
               <Route path="/login" element={<LoginPage />} />
               <Route path="/register" element={<RegisterPage />} />
@@ -56,7 +58,7 @@ const App = () => {
               </Route>
             </Routes>
           </div>
-          <Footer /> 
+          <Footer />
         </div>
       </UserProvider>
     </Router>
