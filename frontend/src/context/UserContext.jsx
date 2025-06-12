@@ -21,6 +21,10 @@ export const UserProvider = ({ children }) => {
     const userData = await res.json();
     setUser(userData);
 
+    if (userData.token) {
+      localStorage.setItem("token", userData.token);
+    }
+
     console.log(`${userData.username} logged in`);
     alert(`${userData.username} logged in`);
 

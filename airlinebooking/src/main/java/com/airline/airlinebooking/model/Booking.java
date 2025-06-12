@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 // Booking.java
+// Booking.java
 @Entity
 @Data
 public class Booking {
@@ -15,12 +16,13 @@ public class Booking {
     private Long id;
 
     private String flightCode;
-    private String username; // ✅ Add this field
+    private String username;
 
     private LocalDateTime outboundTime;
     private LocalDateTime returnTime;
 
+    private double totalPrice; // 💡 Add this line
+
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PassengerDetail> passengers;
 }
-

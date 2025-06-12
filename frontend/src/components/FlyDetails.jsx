@@ -37,14 +37,28 @@ const FlyDetails = () => {
   };
 
   const handleDelete = async (id) => {
+    const token = localStorage.getItem("token");
+
     if (!window.confirm("Are you sure you want to delete this fly detail?"))
       return;
+
     try {
-      await fetch(`http://localhost:8080/api/fly-details/${id}`, {
-        method: "DELETE",
-      });
-      alert("Fly detail deleted successfully.");
-      fetchFlyDetails();
+      const response = await fetch(
+        `http://localhost:8080/api/fly-details/${id}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.ok) {
+        alert("Fly detail deleted successfully.");
+        fetchFlyDetails();
+      } else {
+        alert("Unauthorized or failed to delete.");
+      }
     } catch (err) {
       console.error("Error deleting fly detail:", err);
     }
